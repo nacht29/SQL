@@ -3,11 +3,11 @@
 <img src="https://user-images.githubusercontent.com/81607668/127727503-9d9e7a25-93cb-4f95-8bd0-20b87cb4b459.png" alt="Image" width="500" height="520">
 
 ## 📚 Table of Contents
-- [Task Summary](#task-summar)
+- [Task Summary](#task-summary)
 - [Entity Relationship Diagram](#entity-relationship-diagram)
 - [Questions and Solutions](#questions-and-solutions)
 
-### Task Summar
+### Task Summary
 Danny wants to use the data to answer a few simple questions about his customers, especially about their visiting patterns, how much money they’ve spent and also which menu items are their favourite.
 
 ### Entity Relationship Diagram
