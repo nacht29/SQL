@@ -1,21 +1,24 @@
--- Question 1 
-SELECT 
-  sales.customer_id, 
-  SUM(menu.price) AS total_sales
-FROM
-	sales
-INNER JOIN menu
-  ON sales.product_id = menu.product_id
-GROUP BY
-	sales.customer_id
-ORDER BY
-	sales.customer_id ASC;
+WITH sales_in_order AS (
+	SELECT
+		sales.customer_id,
+        sales.order_date,
+        menu.product_name,
+	DENSE_RANK() OVER(
+		PARTITION BY sales.customer_id
+		ORDER BY sales.order_date ASC) AS ranked
+	FROM
+		sales
+	LEFT JOIN menu
+		ON menu.product_id = sales.product_id
+)
 
--- Question 2
 SELECT
-	sales.customer_id,
-	COUNT(DISTINCT order_date) as number_of_visits
+	customer_id,
+    order_date,
+    product_name
 FROM
-	sales
-GROUP BY
-	sales.customer_id;
+	sales_in_order
+WHERE
+	ranked = 1
+ORDER BY
+	customer_id;

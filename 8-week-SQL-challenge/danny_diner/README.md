@@ -61,7 +61,7 @@ GROUP BY
 
 **Steps:**
 - Use ````COUNT(DISTINCT order_date)```` to count the unique number of visit by each customer
-- The ````DISTINCT```` keyword is highly important here as it avoids counting multiple, duplicate visits on the same day. For example, Customer A has 2 visits on date ````"2021-01-01"````. Without the ````DISTINCT```` keyword, 2 separate days will be counted instead of 1.
+- The ````DISTINCT```` keyword is highly important here as it avoids counting multiple, duplicate visits on the same day. For example, Customer A has 2 visits on date ````"2021-01-01"````. Without the ````DISTINCT```` keyword, 2 separate days will be counted instead of 1
 
 to test:
 ````sql
@@ -91,6 +91,51 @@ HAVING
 
 **3. What was the first item from the menu purchased by each customer?**
 
+````sql
+WITH sales_in_order AS (
+	SELECT
+		sales.customer_id,
+        sales.order_date,
+        menu.product_name,
+	DENSE_RANK() OVER(
+		PARTITION BY sales.customer_id
+		ORDER BY sales.order_date ASC) AS ranked
+	FROM
+		sales
+	LEFT JOIN menu
+		ON menu.product_id = sales.product_id
+)
+
+SELECT
+	customer_id,
+    order_date,
+    product_name
+FROM
+	sales_in_order
+WHERE
+	ranked = 1
+ORDER BY
+	customer_id;
+````
+
+**Steps:**
+
+- Create a CTE (think of it as a temporary table) that contains ````sales.customer_id````, ````sales.order_date```` and ````menu.product_name```` which we will need to show in the final result
+- Within the CTE, create a column ````ranked```` which shows how early each food was ordered. ````DENSE_RANK()```` assigns the ranking follwoing ````ORDER BY sales.order_date ASC````, hence the earlier food orderd gets ranked higher
+- ````PARTITION BY```` ensures the ranking is done separately for each customer
+
+**Answer:**
+
+|customer_id|order_date|product_name|
+|-----------|----------|------------|
+|A          |2021-01-01|curry       |
+|A          |2021-01-01|sushi       |
+|B          |2021-01-01|curry       |
+|C          |2021-01-01|ramen       |
+
+- Customer A ordered both curry and sushi on during their first visit
+- Customer B ordered sushi on their first visit
+- Customer C ordered ramen on their first visit
 
 **4. What is the most purchased item on the menu and how many times was it purchased by all customers?**
 
