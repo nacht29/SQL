@@ -13,3 +13,7 @@ LEFT JOIN menu AS me
 	ON me.product_id = s.product_id
 GROUP BY
 	m.customer_id;
+
+-- Q3 - Q5
+-- menu item and preference analysis
+-- will have to learn CTE for this
