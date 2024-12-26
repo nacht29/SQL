@@ -20,6 +20,7 @@ Steps:
 3. Use ````GROUP```` to calculate contribution by each customer separately, then arrange the results with ````sales.customer````_id in ascending order.
 
 Answer:
+
 ![alt text](image.png)
 
 - Customer A spent $76.
