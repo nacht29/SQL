@@ -9,4 +9,4 @@ Special thanks to **[Katie](https://github.com/katiehuangx)** for inspiring me o
 ## 📚 Table of Contents
 
 Simply click on the links below to access the solution to each case study.
-- **[Case Study #1: Danny's Diner](https://github.com/nacht29/SQL/blob/main/8-weeks-SQL-challenge/README.md)**
+- **[Case Study #1: Danny's Diner](https://github.com/nacht29/SQL/tree/main/8-week-SQL-challenge/danny_diner)**
