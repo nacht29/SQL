@@ -21,7 +21,11 @@ Steps:
 
 Answer:
 
-![alt text](image.png)
+| customer_id | total_sales |
+|-------------|-------------|
+| A           | 76          |
+| B           | 74          |
+| C           | 36          |
 
 - Customer A spent $76.
 - Customer B spent $74.
