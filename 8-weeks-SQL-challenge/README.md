@@ -1,4 +1,4 @@
-# 8-Week SQL Challenges
+# 8 Week SQL Challenge
 
 This directory contains the solutions for 8 case studies listed in **[#8WeekSQLChallenge](https://8weeksqlchallenge.com)**.
 
