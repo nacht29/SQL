@@ -9,4 +9,13 @@ INNER JOIN menu
 GROUP BY
 	sales.customer_id
 ORDER BY
-	sales.customer_id ASC; 
+	sales.customer_id ASC;
+
+-- Question 2
+SELECT
+	sales.customer_id,
+    COUNT(DISTINCT order_date) as number_of_visits
+FROM
+	sales
+GROUP BY
+	sales.customer_id;
