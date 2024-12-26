@@ -25,9 +25,9 @@ ORDER BY
 ````
 
 **Steps:**
-1. Use ```JOIN``` to merge ````sales```` table and ````menu````table since we need ````sales.customer_id```` and ````menu.price```` to show and count the amount each customer spent
-2. Use ````SUM```` to total up the sales contributed by each customer.
-3. Use ````GROUP```` to calculate contribution by each customer separately, then arrange the results with ````sales.customer````_id in ascending order.
+- Use ```JOIN``` to merge ````sales```` table and ````menu````table since we need ````sales.customer_id```` and ````menu.price```` to show and count the amount each customer spent
+- Use ````SUM```` to total up the sales contributed by each customer.
+- Use ````GROUP```` to calculate contribution by each customer separately, then arrange the results with ````sales.customer````_id in ascending order.
 
 **Answer:**
 
@@ -40,3 +40,66 @@ ORDER BY
 - Customer A spent $76.
 - Customer B spent $74.
 - Customer C spent $36.
+
+**2. How many days has each customer visited the restaurant?**
+
+````sql
+SELECT
+	sales.customer_id,
+	COUNT(DISTINCT order_date) as number_of_visits
+FROM
+	sales
+GROUP BY
+	sales.customer_id;
+````
+
+**Steps:**
+- Use ````COUNT(DISTINCT order_date)```` to count the unique number of visit by each customer
+- The ````DISTINCT```` keyword is highly important here as it avoids counting multiple, duplicate visits on the same day. For example, Customer A has 2 visits on date ````"2021-01-01"````. Without the ````DISTINCT```` keyword, 2 separate days will be counted instead of 1.
+
+to test:
+````sql
+SELECT
+    customer_id,
+    order_date
+FROM
+    sales
+GROUP BY
+    customer_id,
+    order_date
+HAVING
+    COUNT(*) > 1;
+````
+
+**Answer:**
+
+|customer_id|number_of_visits|
+|-----------|----------------|
+|A          |4               |
+|B          |6               |
+|C          |2               |
+
+- Customer A visitted on 4 days
+- Customer B visitted on 6 days
+- Customer C visitted on 2 days
+
+**3. What was the first item from the menu purchased by each customer?**
+
+
+**4. What is the most purchased item on the menu and how many times was it purchased by all customers?**
+
+**5. Which item was the most popular for each customer?**
+
+
+**6. Which item was purchased first by the customer after they became a member?**
+
+
+**7. Which item was purchased just before the customer became a member?**
+
+
+**8. What is the total items and amount spent for each member before they became a member?**
+
+
+**9. If each $1 spent equates to 10 points and sushi has a 2x points multiplier - how many points would each customer have?**
+
+**10. In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?**

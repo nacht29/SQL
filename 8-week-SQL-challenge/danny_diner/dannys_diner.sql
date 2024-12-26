@@ -14,7 +14,7 @@ ORDER BY
 -- Question 2
 SELECT
 	sales.customer_id,
-    COUNT(DISTINCT order_date) as number_of_visits
+	COUNT(DISTINCT order_date) as number_of_visits
 FROM
 	sales
 GROUP BY
