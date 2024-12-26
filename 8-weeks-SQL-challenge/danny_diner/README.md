@@ -18,3 +18,10 @@ Steps:
 1. Use ```JOIN``` to merge ````sales```` table and ````menu````table since we need ````sales.customer_id```` and ````menu.price```` to show and count the amount each customer spent
 2. Use ````SUM```` to total up the sales contributed by each customer.
 3. Use ````GROUP```` to calculate contribution by each customer separately, then arrange the results with ````sales.customer````_id in ascending order.
+
+Answer:
+![alt text](image.png)
+
+- Customer A spent $76.
+- Customer B spent $74.
+- Customer C spent $36.
