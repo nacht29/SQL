@@ -6,6 +6,7 @@
 - [Task Summary](#task-summary)
 - [Entity Relationship Diagram](#entity-relationship-diagram)
 - [Questions and Solutions](#questions-and-solutions)
+- [Data Summary](#data-summary)
 
 ### Task Summary
 Danny wants to use the data to answer a few simple questions about his customers, especially about their visiting patterns, how much money they’ve spent and also which menu items are their favourite.
@@ -154,3 +155,11 @@ ORDER BY
 **9. If each $1 spent equates to 10 points and sushi has a 2x points multiplier - how many points would each customer have?**
 
 **10. In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?**
+
+### Data Summary
+
+|customer_id|first_order|favorite_item|amount_spent|visit_count|membership_status      |
+|-----------|-----------|-------------|------------|-----------|-----------------------|
+|A          |sushi      |ramen        |$76.00      |4          |Member since 2021-01-07|
+|B          |curry      |sushi        |$74.00      |6          |Member since 2021-01-09|
+|C          |ramen      |ramen        |$36.00      |2          |Non-member             |
