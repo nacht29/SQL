@@ -19,12 +19,12 @@ Danny wants to use the data to answer a few simple questions about his customers
 
 ````sql
 SELECT 
-  sales.customer_id, 
-  SUM(menu.price) AS total_sales
+	sales.customer_id, 
+	SUM(menu.price) AS total_sales
 FROM
 	sales
 LEFT JOIN menu
-  ON sales.product_id = menu.product_id
+	ON sales.product_id = menu.product_id
 GROUP BY
 	sales.customer_id
 ORDER BY
@@ -67,15 +67,15 @@ GROUP BY
 to test:
 ````sql
 SELECT
-    customer_id,
-    order_date
+	customer_id,
+	order_date
 FROM
-    sales
+	sales
 GROUP BY
-    customer_id,
-    order_date
+	customer_id,
+	order_date
 HAVING
-    COUNT(*) > 1;
+	COUNT(*) > 1;
 ````
 
 **Answer:**
@@ -96,8 +96,8 @@ HAVING
 WITH sales_in_order AS (
 	SELECT
 		sales.customer_id,
-        sales.order_date,
-        menu.product_name,
+		sales.order_date,
+		menu.product_name,
 	DENSE_RANK() OVER(
 		PARTITION BY sales.customer_id
 		ORDER BY sales.order_date ASC) AS ranked
@@ -109,8 +109,8 @@ WITH sales_in_order AS (
 
 SELECT
 	customer_id,
-    order_date,
-    product_name
+	order_date,
+	product_name
 FROM
 	sales_in_order
 WHERE
@@ -139,6 +139,43 @@ ORDER BY
 - Customer C ordered ramen on their first visit
 
 **4. What is the most purchased item on the menu and how many times was it purchased by all customers?**
+
+````sql
+WITH sales_count_cte AS (
+	SELECT
+		menu.product_id,
+		menu.product_name,
+		COUNT(*) AS item_sold
+	FROM
+		menu
+	LEFT JOIN sales
+		ON sales.product_id = menu.product_id
+	GROUP BY
+		menu.product_id,
+		menu.product_name
+),
+
+sales_ranking_cte AS (
+	SELECT
+		sales_count_cte.product_id,
+		sales_count_cte.product_name,
+		sales_count_cte.item_sold,
+		DENSE_RANK() OVER (
+			ORDER BY sales_count_cte.item_sold
+		) AS ranking
+	FROM
+		sales_count_cte
+)
+
+SELECT
+	product_id,
+	product_name,
+	item_sold
+FROM
+	sales_ranking_cte
+WHERE
+	ranking = 1;
+````
 
 **5. Which item was the most popular for each customer?**
 
