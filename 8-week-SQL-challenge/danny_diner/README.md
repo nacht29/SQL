@@ -141,11 +141,11 @@ ORDER BY
 **4. What is the most purchased item on the menu and how many times was it purchased by all customers?**
 
 ````sql
-WITH sales_count_cte AS (
+WITH sales_count AS (
 	SELECT
 		menu.product_id,
 		menu.product_name,
-		COUNT(*) AS item_sold
+		COUNT(*) AS unit_sold
 	FROM
 		menu
 	LEFT JOIN sales
@@ -155,27 +155,55 @@ WITH sales_count_cte AS (
 		menu.product_name
 ),
 
-sales_ranking_cte AS (
+sales_count_ranking AS (
 	SELECT
-		sales_count_cte.product_id,
-		sales_count_cte.product_name,
-		sales_count_cte.item_sold,
+		sales_count.product_id,
+		sales_count.product_name,
+		sales_count.unit_sold,
 		DENSE_RANK() OVER (
-			ORDER BY sales_count_cte.item_sold
+			ORDER BY sales_count.unit_sold DESC
 		) AS ranking
 	FROM
-		sales_count_cte
+		sales_count
 )
 
 SELECT
 	product_id,
 	product_name,
-	item_sold
+	unit_sold
 FROM
-	sales_ranking_cte
+	sales_count_ranking
 WHERE
 	ranking = 1;
 ````
+
+**Steps:**
+- Create a CTE ````sales_count```` to store the how many units each food was sold using ````COUNT````
+- Create another CTE ````sales_count_ranking```` and rank the sales of each food using ````DENSE_RANK()````
+- Use ````ORDER BY sales_count.unit_sold DESC```` so that the food with the higher sales is ranked first
+- This approach accounts for the case where multiple foods share the top-selling food. For example, both sushi and ramen have 10 unit sold, while curry has 8 units sold
+
+**Answer:**
+
+|product_id|product_name|unit_sold|
+|----------|------------|---------|
+|3         |ramen       |8        |
+
+- Ramen is the most popular food, with 8 units sold
+
+To see the sales for other foods, simply run:
+
+````sql
+SELECT * FROM sales_count;
+````
+
+**Output:**
+
+|product_id|product_name|unit_sold|
+|----------|------------|---------|
+|1         |sushi       |3        |
+|2         |curry       |4        |
+|3         |ramen       |8        |
 
 **5. Which item was the most popular for each customer?**
 

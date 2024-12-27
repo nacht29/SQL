@@ -1,8 +1,8 @@
-WITH sales_count_cte AS (
+WITH sales_count AS (
 	SELECT
 		menu.product_id,
 		menu.product_name,
-		COUNT(*) AS item_sold
+		COUNT(*) AS unit_sold
 	FROM
 		menu
 	LEFT JOIN sales
@@ -12,23 +12,23 @@ WITH sales_count_cte AS (
 		menu.product_name
 ),
 
-sales_ranking_cte AS (
+sales_count_ranking AS (
 	SELECT
-		sales_count_cte.product_id,
-		sales_count_cte.product_name,
-		sales_count_cte.item_sold,
+		sales_count.product_id,
+		sales_count.product_name,
+		sales_count.unit_sold,
 		DENSE_RANK() OVER (
-			ORDER BY sales_count_cte.item_sold
+			ORDER BY sales_count.unit_sold DESC
 		) AS ranking
 	FROM
-		sales_count_cte
+		sales_count
 )
 
 SELECT
 	product_id,
 	product_name,
-	item_sold
+	unit_sold
 FROM
-	sales_ranking_cte
+	sales_count_ranking
 WHERE
 	ranking = 1;
