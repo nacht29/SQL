@@ -178,7 +178,7 @@ WHERE
 ````
 
 **Steps:**
-- Create a CTE ````sales_count```` to store the how many units each food was sold using ````COUNT````
+- Create a CTE ````sales_count```` to and calculate how many units each food was sold using ````COUNT````
 - Create another CTE ````sales_count_ranking```` and rank the sales of each food using ````DENSE_RANK()````
 - Use ````ORDER BY sales_count.unit_sold DESC```` so that the food with the higher sales is ranked first
 - This approach accounts for the case where multiple foods share the top-selling spot. For example, both sushi and ramen have 10 unit sold, while curry has 8 units sold
@@ -196,8 +196,7 @@ To see the sales for other foods, simply run:
 ````sql
 SELECT * FROM sales_count;
 ````
-
-**Output:**
+Output:
 
 |product_id|product_name|unit_sold|
 |----------|------------|---------|
@@ -246,6 +245,41 @@ WHERE
 ````
 
 **Steps:**
+- Create a CTE ````orders_by_customer```` and calculate how many units each food is ordered by each customer using ````COUNT````
+- Create another CTE ````preference_ranking```` and rank the ordering frequency of each food by each customer using ````DENSE_RANK()````
+- Use ````ORDER BY unit_sold DESC```` so that the food with the higher sales is ranked first
+
+**Answer:**
+
+|customer_id|product_name|unit_sold|
+|-----------|------------|---------|
+|A          |ramen       |3        |
+|B          |curry       |2        |
+|B          |sushi       |2        |
+|B          |ramen       |2        |
+|C          |ramen       |3        |
+
+- Customer A's favourite is ramen
+- Customer B's favourites are curry, sushi and ramen
+- Customer C's favourite is ramen
+
+To see the preference data for each customer, run:
+
+````sql
+SELECT * FROM preference_ranking;
+````
+Output:
+
+|customer_id|product_name|unit_sold|ranking|
+|-----------|------------|---------|-------|
+|A          |ramen       |3        |1      |
+|A          |curry       |2        |2      |
+|A          |sushi       |1        |3      |
+|B          |curry       |2        |1      |
+|B          |sushi       |2        |1      |
+|B          |ramen       |2        |1      |
+|C          |ramen       |3        |1      |
+
 
 
 **6. Which item was purchased first by the customer after they became a member?**

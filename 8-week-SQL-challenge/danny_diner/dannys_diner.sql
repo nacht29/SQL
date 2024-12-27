@@ -33,5 +33,3 @@ FROM
 	preference_ranking
 WHERE
 	ranking = 1;
-
--- SELECT * FROM preference_ranking;
