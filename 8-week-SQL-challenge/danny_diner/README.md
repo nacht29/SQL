@@ -222,9 +222,3 @@ SELECT * FROM sales_count;
 **10. In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?**
 
 ### Data Summary
-
-|customer_id|first_order|favorite_item|amount_spent|visit_count|membership_status      |
-|-----------|-----------|-------------|------------|-----------|-----------------------|
-|A          |sushi      |ramen        |$76.00      |4          |Member since 2021-01-07|
-|B          |curry      |sushi        |$74.00      |6          |Member since 2021-01-09|
-|C          |ramen      |ramen        |$36.00      |2          |Non-member             |
