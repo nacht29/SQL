@@ -1,34 +1,37 @@
-WITH sales_count AS (
+WITH orders_by_customer AS (
 	SELECT
-		menu.product_id,
+		sales.customer_id,
 		menu.product_name,
 		COUNT(*) AS unit_sold
 	FROM
-		menu
-	LEFT JOIN sales
+		sales
+	LEFT JOIN menu
 		ON sales.product_id = menu.product_id
 	GROUP BY
-		menu.product_id,
+		sales.customer_id,
 		menu.product_name
 ),
 
-sales_count_ranking AS (
+preference_ranking AS (
 	SELECT
-		sales_count.product_id,
-		sales_count.product_name,
-		sales_count.unit_sold,
+		customer_id,
+		product_name,
+		unit_sold,
 		DENSE_RANK() OVER (
-			ORDER BY sales_count.unit_sold DESC
+			PARTITION BY customer_id
+			ORDER BY unit_sold DESC
 		) AS ranking
 	FROM
-		sales_count
+		orders_by_customer
 )
 
 SELECT
-	product_id,
+	customer_id,
 	product_name,
 	unit_sold
 FROM
-	sales_count_ranking
+	preference_ranking
 WHERE
 	ranking = 1;
+
+-- SELECT * FROM preference_ranking;

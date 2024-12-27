@@ -4,6 +4,8 @@ This directory contains the solutions for 8 case studies listed in **[#8WeekSQLC
 
 It showcases my proficiency in SQL querying and thus the ability to problem solve with SQL as a tool.
 
+This is my very first attempt at SQL projects, and also part of my learning journey.
+
 Special thanks to **[Katie](https://github.com/katiehuangx)** for inspiring me on how to present my very first SQL project!
 
 ## 📚 Table of Contents
