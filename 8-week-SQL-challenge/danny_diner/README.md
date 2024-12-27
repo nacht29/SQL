@@ -181,7 +181,7 @@ WHERE
 - Create a CTE ````sales_count```` to store the how many units each food was sold using ````COUNT````
 - Create another CTE ````sales_count_ranking```` and rank the sales of each food using ````DENSE_RANK()````
 - Use ````ORDER BY sales_count.unit_sold DESC```` so that the food with the higher sales is ranked first
-- This approach accounts for the case where multiple foods share the top-selling food. For example, both sushi and ramen have 10 unit sold, while curry has 8 units sold
+- This approach accounts for the case where multiple foods share the top-selling spot. For example, both sushi and ramen have 10 unit sold, while curry has 8 units sold
 
 **Answer:**
 
