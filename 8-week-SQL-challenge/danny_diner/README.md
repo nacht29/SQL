@@ -47,6 +47,8 @@ ORDER BY
 - Customer B spent $74.
 - Customer C spent $36.
 
+***
+
 **2. How many days has each customer visited the restaurant?**
 
 ````sql
@@ -88,6 +90,8 @@ HAVING
 - Customer A visitted on 4 days
 - Customer B visitted on 6 days
 - Customer C visitted on 2 days
+
+***
 
 **3. What was the first item from the menu purchased by each customer?**
 
@@ -136,6 +140,8 @@ ORDER BY
 - Customer A ordered both curry and sushi on during their first visit
 - Customer B ordered sushi on their first visit
 - Customer C ordered ramen on their first visit
+
+***
 
 **4. What is the most purchased item on the menu and how many times was it purchased by all customers?**
 
@@ -202,6 +208,8 @@ Output:
 |1         |sushi       |3        |
 |2         |curry       |4        |
 |3         |ramen       |8        |
+
+***
 
 **5. Which item was the most popular for each customer?**
 
@@ -279,7 +287,7 @@ Output:
 |B          |ramen       |2        |1      |
 |C          |ramen       |3        |1      |
 
-
+***
 
 **6. Which item was purchased first by the customer after they became a member?**
 
@@ -325,6 +333,8 @@ ORDER BY
 
 - Customer A ordered ramen after becoming a member
 - Customer B ordered sushi after becoming a member
+
+***
 
 **7. Which item was purchased just before the customer became a member?**
 
@@ -375,6 +385,8 @@ ORDER BY
 - Customer A ordered both sushi and curry just before becoming a member
 - Customer B ordered sushi just before becoming a member
 
+***
+
 **8. What is the total items and amount spent for each member before they became a member?**
 
 ````sql
@@ -419,6 +431,7 @@ ORDER BY
 - Customer A ordered 2 items for the price of $25 before becoming a member
 - Customer B ordered 3 items for the price of $40 before becoming a member
 
+***
 
 **9. If each $1 spent equates to 10 points and sushi has a 2x points multiplier - how many points would each customer have?**
 
@@ -454,5 +467,7 @@ GROUP BY
 - Customer A has 860 points
 - Customer B has 940 points
 - Customer C has 360 points
+
+***
 
 **10. In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?**
