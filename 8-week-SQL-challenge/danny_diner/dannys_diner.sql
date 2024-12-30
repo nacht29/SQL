@@ -1,24 +1,28 @@
-WITH pre_member_order AS (
+WITH member_orders AS (
 	SELECT
 		members.customer_id,
-		sales.order_date,
-		sales.product_id
+		sales.product_id,
+		DENSE_RANK() OVER (
+			PARTITION BY members.customer_id
+			ORDER BY sales.order_date ASC
+		) AS ranked
 	FROM
 		members
 	INNER JOIN sales
 		ON sales.customer_id = members.customer_id 
-		AND sales.order_date < members.join_date
+		AND sales.order_date > members.join_date
 )
 
 SELECT
-	pre_member_order.customer_id,
-	COUNT(*) AS item_purchased,
-	SUM(menu.price) AS total_price
+	member_orders.customer_id,
+	SUM(menu.price) * 10 AS points
 FROM
-	pre_member_order
-JOIN menu
-	ON menu.product_id = pre_member_order.product_id
+	member_orders
+INNER JOIN menu
+	ON menu.product_id = member_orders.product_id
+WHERE
+	member_orders.ranked <= 7
 GROUP BY
-	pre_member_order.customer_id
+	member_orders.customer_id
 ORDER BY
-	pre_member_order.customer_id ASC;
+	member_orders.customer_id;

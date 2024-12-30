@@ -6,6 +6,7 @@
 - [Task Summary](#task-summary)
 - [Entity Relationship Diagram](#entity-relationship-diagram)
 - [Questions and Solutions](#questions-and-solutions)
+- [Bonus Questions and Solutions](#bonus-questions-and-solutions)
 
 ### Task Summary
 Danny wants to use the data to answer a few simple questions about his customers, especially about their visiting patterns, how much money they’ve spent and also which menu items are their favourite.
@@ -391,29 +392,29 @@ ORDER BY
 
 ````sql
 WITH pre_member_order AS (
-    SELECT
-        members.customer_id,
-        sales.order_date,
-        sales.product_id
-    FROM
-        members
-    INNER JOIN sales
-        ON sales.customer_id = members.customer_id 
-        AND sales.order_date < members.join_date
+	SELECT
+		members.customer_id,
+		sales.order_date,
+		sales.product_id
+	FROM
+		members
+	INNER JOIN sales
+		ON sales.customer_id = members.customer_id 
+		AND sales.order_date < members.join_date
 )
 
 SELECT
-    pre_member_order.customer_id,
-    COUNT(*) AS item_purchased,
-    SUM(menu.price) AS total_price
+	pre_member_order.customer_id,
+	COUNT(*) AS item_purchased,
+	SUM(menu.price) AS total_price
 FROM
-    pre_member_order
+	pre_member_order
 JOIN menu
-    ON menu.product_id = pre_member_order.product_id
+	ON menu.product_id = pre_member_order.product_id
 GROUP BY
-    pre_member_order.customer_id
+	pre_member_order.customer_id
 ORDER BY
-    pre_member_order.customer_id ASC;
+	pre_member_order.customer_id ASC;
 ````
 **Steps:**
 
@@ -471,3 +472,13 @@ GROUP BY
 ***
 
 **10. In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?**
+
+### Bonus Questions and Solutions
+
+**1. Join All The Things**
+
+**Recreate the following table with customer_id, order_date, product_name, price, member**
+
+**2. Rank All The Things**
+
+**Danny also requires further information about the ranking of customer products, but he purposely does not need the ranking for non-member purchases so he expects null ranking values for the records when customers are not yet part of the loyalty program.**
