@@ -1,12 +1,24 @@
+WITH pre_member_order AS (
+	SELECT
+		members.customer_id,
+		sales.order_date,
+		sales.product_id
+	FROM
+		members
+	INNER JOIN sales
+		ON sales.customer_id = members.customer_id 
+		AND sales.order_date < members.join_date
+)
+
 SELECT
-	sales.customer_id,
-	SUM(CASE
-		WHEN menu.product_name = "sushi" THEN menu.price * 2
-		ELSE menu.price
-		END) * 10 AS points
+	pre_member_order.customer_id,
+	COUNT(*) AS item_purchased,
+	SUM(menu.price) AS total_price
 FROM
-	sales
-INNER JOIN menu
-	ON menu.product_id = sales.product_id
+	pre_member_order
+JOIN menu
+	ON menu.product_id = pre_member_order.product_id
 GROUP BY
-	sales.customer_id;
+	pre_member_order.customer_id
+ORDER BY
+	pre_member_order.customer_id ASC;

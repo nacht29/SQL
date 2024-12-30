@@ -377,6 +377,48 @@ ORDER BY
 
 **8. What is the total items and amount spent for each member before they became a member?**
 
+````sql
+WITH pre_member_order AS (
+    SELECT
+        members.customer_id,
+        sales.order_date,
+        sales.product_id
+    FROM
+        members
+    INNER JOIN sales
+        ON sales.customer_id = members.customer_id 
+        AND sales.order_date < members.join_date
+)
+
+SELECT
+    pre_member_order.customer_id,
+    COUNT(*) AS item_purchased,
+    SUM(menu.price) AS total_price
+FROM
+    pre_member_order
+JOIN menu
+    ON menu.product_id = pre_member_order.product_id
+GROUP BY
+    pre_member_order.customer_id
+ORDER BY
+    pre_member_order.customer_id ASC;
+````
+**Steps:**
+
+- Create a CTE ````pre_member_order```` which stores all member's orders before they become a member with ````sales.order_date < members.join_date````
+- Use ````COUNT(*)```` to count the total number of items ordered
+- Use ````SUM(menu.price)```` to sum up the prices of each order
+
+**Answer:**
+
+|customer_id|item_purchased|total_price|
+|-----------|--------------|-----------|
+|A          |2             |25         |
+|B          |3             |40         |
+
+- Customer A ordered 2 items for the price of $25 before becoming a member
+- Customer B ordered 3 items for the price of $40 before becoming a member
+
 
 **9. If each $1 spent equates to 10 points and sushi has a 2x points multiplier - how many points would each customer have?**
 
@@ -396,6 +438,7 @@ GROUP BY
 ````
 
 **Steps:**
+
 - Use ````SUM```` to add up the price of all orders for each customer
 - Use ````WHEN menu.product_name = "sushi" THEN menu.price * 2```` since sushi has a 2x multiplier
 - Use ````SUM(...) * 10```` to multiply the sum of prices by 10 as $1 = 10 points
