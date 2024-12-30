@@ -284,6 +284,48 @@ Output:
 
 **6. Which item was purchased first by the customer after they became a member?**
 
+````sql
+WITH member_orders AS (
+	SELECT
+		members.customer_id,
+		sales.product_id,
+		DENSE_RANK() OVER (
+			PARTITION BY members.customer_id
+			ORDER BY sales.order_date ASC
+		) AS ranked
+	FROM
+		members
+	INNER JOIN sales
+		ON sales.customer_id = members.customer_id 
+		AND sales.order_date > members.join_date
+)
+
+SELECT
+	member_orders.customer_id,
+	menu.product_name
+FROM
+	member_orders
+INNER JOIN menu
+	ON menu.product_id = member_orders.product_id
+WHERE
+	member_orders.ranked = 1
+ORDER BY
+	member_orders.customer_id;
+````
+**Steps:**
+
+- Create a CTE ````member_orders```` to store the ````product_id```` of their order after becoming a member
+- Use ````INNER JOIN```` and````sales.order_date > members.join_date```` to ensure the data stored is order from after the customer joined the membership
+
+**Answer:**
+
+|customer_id|product_name|
+|-----------|------------|
+|A          |ramen       |
+|B          |sushi       |
+
+- Customer A ordered ramen after becoming a member
+- Customer B ordered sushi after becoming a member
 
 **7. Which item was purchased just before the customer became a member?**
 
