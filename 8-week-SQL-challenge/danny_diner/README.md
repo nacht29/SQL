@@ -6,7 +6,6 @@
 - [Task Summary](#task-summary)
 - [Entity Relationship Diagram](#entity-relationship-diagram)
 - [Questions and Solutions](#questions-and-solutions)
-- [Data Summary](#data-summary)
 
 ### Task Summary
 Danny wants to use the data to answer a few simple questions about his customers, especially about their visiting patterns, how much money they’ve spent and also which menu items are their favourite.
@@ -33,8 +32,8 @@ ORDER BY
 
 **Steps:**
 - Use ```JOIN``` to merge ````sales```` table and ````menu````table since we need ````sales.customer_id```` and ````menu.price```` to show and count the amount each customer spent
-- Use ````SUM```` to total up the sales contributed by each customer.
-- Use ````GROUP```` to calculate contribution by each customer separately, then arrange the results with ````sales.customer````_id in ascending order.
+- Use ````SUM```` to total up the sales contributed by each customer
+- Use ````GROUP```` to calculate contribution by each customer separately, then arrange the results with ````sales.customer````_id in ascending order
 
 **Answer:**
 
@@ -329,6 +328,52 @@ ORDER BY
 
 **7. Which item was purchased just before the customer became a member?**
 
+````sql
+WITH pre_member_order AS (
+	SELECT
+		members.customer_id,
+		sales.order_date,
+		sales.product_id,
+		DENSE_RANK() OVER (
+			PARTITION BY members.customer_id
+			ORDER BY sales.order_date DESC
+		) AS rev_ranked
+	FROM
+		members
+	INNER JOIN sales
+		ON sales.customer_id = members.customer_id 
+		AND sales.order_date < members.join_date
+)
+
+SELECT
+	pre_member_order.customer_id,
+	menu.product_name
+FROM
+	pre_member_order
+INNER JOIN menu
+	ON menu.product_id = pre_member_order.product_id
+WHERE
+	rev_ranked = 1
+ORDER BY
+	pre_member_order.customer_id ASC;
+````
+
+**Steps:**
+
+- Create a CTE ````pre_member_order```` which stores all member's orders before they become a member with ````sales.order_date < members.join_date````
+- Use ````ORDER BY sales.order_date DESC```` so that the latest order for each customer before they became a member is on top
+- Use ````DENSE_RANK()```` to rank the food orders by date as ````rev_ranked````, so that we can coveniently filter and retrieve using ````rev_ranked = 1````
+
+**Answer:**
+
+|customer_id|product_name|
+|-----------|------------|
+|A          |sushi       |
+|A          |curry       |
+|B          |sushi       |
+
+- Customer A ordered both sushi and curry just before becoming a member
+- Customer B ordered sushi just before becoming a member
 
 **8. What is the total items and amount spent for each member before they became a member?**
 
@@ -336,5 +381,3 @@ ORDER BY
 **9. If each $1 spent equates to 10 points and sushi has a 2x points multiplier - how many points would each customer have?**
 
 **10. In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?**
-
-### Data Summary

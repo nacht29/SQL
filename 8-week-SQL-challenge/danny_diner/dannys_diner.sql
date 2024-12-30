@@ -1,26 +1,27 @@
-WITH member_orders AS (
+WITH pre_member_order AS (
 	SELECT
 		members.customer_id,
+		sales.order_date,
 		sales.product_id,
 		DENSE_RANK() OVER (
 			PARTITION BY members.customer_id
-			ORDER BY sales.order_date ASC
-		) AS ranked
+			ORDER BY sales.order_date DESC
+		) AS rev_ranked
 	FROM
 		members
 	INNER JOIN sales
 		ON sales.customer_id = members.customer_id 
-		AND sales.order_date > members.join_date
+		AND sales.order_date < members.join_date
 )
 
 SELECT
-	member_orders.customer_id,
+	pre_member_order.customer_id,
 	menu.product_name
 FROM
-	member_orders
+	pre_member_order
 INNER JOIN menu
-	ON menu.product_id = member_orders.product_id
+	ON menu.product_id = pre_member_order.product_id
 WHERE
-	member_orders.ranked = 1
+	rev_ranked = 1
 ORDER BY
-	member_orders.customer_id;
+	pre_member_order.customer_id ASC;	
