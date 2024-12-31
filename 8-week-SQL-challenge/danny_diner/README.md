@@ -520,15 +520,124 @@ ORDER BY
 |A          |1370  |
 |B          |820   |
 
-- Customer A has 1370 points by the end of January 2021
-- Customer B has 820 points by the end of January 2021
+- Customer A has 1370 points by the end of January 2021.
+- Customer B has 820 points by the end of January 2021.
 
 ### Bonus Questions and Solutions
 
 **1. Join All The Things**
 
-**Recreate the following table with customer_id, order_date, product_name, price, member**
+**Recreate the following table with customer_id, order_date, product_name, price, member(Y/N)**
+
+````sql
+SELECT
+	sales.customer_id,
+	sales.order_date,
+	menu.product_name,
+	menu.price,
+	CASE
+	WHEN sales.order_date >= members.join_date
+		THEN 'Y'
+	ELSE
+		'N'
+	END AS member
+FROM
+	sales
+LEFT JOIN members
+	ON members.customer_id = sales.customer_id
+INNER JOIN menu
+	ON menu.product_id = sales.product_id
+ORDER BY
+	sales.customer_id;
+````
+
+- Use ````CASE WHEN sales.order_date >= members.join_date```` to set the ````member```` status columnn to 'Y' if ````order_date```` is at or after ````members.join_date````.
+- Otherwise, set ````member```` status to 'N', accounting for cases where the order is made before becoming a member or the customer is never a member.
+
+**Answer:**
+
+|customer_id|order_date|product_name|price|member|
+|-----------|----------|------------|-----|------|
+|A          |2021-01-01|sushi       |10   |N     |
+|A          |2021-01-01|curry       |15   |N     |
+|A          |2021-01-07|curry       |15   |Y     |
+|A          |2021-01-10|ramen       |12   |Y     |
+|A          |2021-01-11|ramen       |12   |Y     |
+|A          |2021-01-11|ramen       |12   |Y     |
+|B          |2021-01-01|curry       |15   |N     |
+|B          |2021-01-02|curry       |15   |N     |
+|B          |2021-01-04|sushi       |10   |N     |
+|B          |2021-01-11|sushi       |10   |Y     |
+|B          |2021-01-16|ramen       |12   |Y     |
+|B          |2021-02-01|ramen       |12   |Y     |
+|C          |2021-01-01|ramen       |12   |N     |
+|C          |2021-01-01|ramen       |12   |N     |
+|C          |2021-01-07|ramen       |12   |N     |
 
 **2. Rank All The Things**
 
 **Danny also requires further information about the ranking of customer products, but he purposely does not need the ranking for non-member purchases so he expects null ranking values for the records when customers are not yet part of the loyalty program.**
+
+````sql
+WITH customer_data AS (
+	SELECT
+		sales.customer_id,
+		sales.order_date,
+		menu.product_name,
+		menu.price,
+		CASE
+		WHEN sales.order_date >= members.join_date
+			THEN 'Y'
+		ELSE
+			'N'
+		END AS member
+	FROM
+		sales
+	LEFT JOIN members
+		ON members.customer_id = sales.customer_id
+	INNER JOIN menu
+		ON menu.product_id = sales.product_id
+	ORDER BY
+		sales.customer_id
+)
+
+SELECT
+	*,
+	CASE
+	WHEN member = 'N'
+		THEN NULL
+	ELSE
+		DENSE_RANK() OVER (
+			PARTITION BY customer_id, member
+			ORDER BY order_date
+		)
+	END AS ranking
+FROM
+	customer_data;
+````
+
+**Steps:**
+- Create a CTE ````customer_data```` that tracks member ship status as ````member````.
+- Set ````ranking```` column to ````NULL```` if ````member```` is 'N'.
+- Else, for ````member```` is 'Y', rank the order by price using ```` DENSE_RANK()```` to find the most expensive food by each member in the loyalty programme.
+- Note: It is important to use ````PARTITION BY customer_id, member```` to avoid ranking rows where ````member```` is ````NULL````.
+
+**Answer:**
+
+|customer_id|order_date|product_name|price|member|ranking|
+|-----------|----------|------------|-----|------|-------|
+|A          |2021-01-01|sushi       |10   |N     |NULL   |
+|A          |2021-01-01|curry       |15   |N     |NULL   |
+|A          |2021-01-07|curry       |15   |Y     |1      |
+|A          |2021-01-10|ramen       |12   |Y     |2      |
+|A          |2021-01-11|ramen       |12   |Y     |3      |
+|A          |2021-01-11|ramen       |12   |Y     |3      |
+|B          |2021-01-01|curry       |15   |N     |NULL   |
+|B          |2021-01-02|curry       |15   |N     |NULL   |
+|B          |2021-01-04|sushi       |10   |N     |NULL   |
+|B          |2021-01-11|sushi       |10   |Y     |1      |
+|B          |2021-01-16|ramen       |12   |Y     |2      |
+|B          |2021-02-01|ramen       |12   |Y     |3      |
+|C          |2021-01-01|ramen       |12   |N     |NULL   |
+|C          |2021-01-01|ramen       |12   |N     |NULL   |
+|C          |2021-01-07|ramen       |12   |N     |NULL   |
