@@ -32,9 +32,9 @@ ORDER BY
 ````
 
 **Steps:**
-- Use ```JOIN``` to merge ````sales```` table and ````menu````table since we need ````sales.customer_id```` and ````menu.price```` to show and count the amount each customer spent
-- Use ````SUM```` to total up the sales contributed by each customer
-- Use ````GROUP```` to calculate contribution by each customer separately, then arrange the results with ````sales.customer````_id in ascending order
+- Use ```JOIN``` to merge ````sales```` table and ````menu````table since we need ````sales.customer_id```` and ````menu.price```` to show and count the amount each customer spent.
+- Use ````SUM```` to total up the sales contributed by each customer.
+- Use ````GROUP```` to calculate contribution by each customer separately, then arrange the results with ````sales.customer````_id in ascending order.
 
 **Answer:**
 
@@ -63,8 +63,8 @@ GROUP BY
 ````
 
 **Steps:**
-- Use ````COUNT(DISTINCT order_date)```` to count the unique number of visit by each customer
-- The ````DISTINCT```` keyword is highly important here as it avoids counting multiple, duplicate visits on the same day. For example, Customer A has 2 visits on date ````"2021-01-01"````. Without the ````DISTINCT```` keyword, 2 separate days will be counted instead of 1
+- Use ````COUNT(DISTINCT order_date)```` to count the unique number of visit by each customer.
+- The ````DISTINCT```` keyword is highly important here as it avoids counting multiple, duplicate visits on the same day. For example, Customer A has 2 visits on date ````"2021-01-01"````. Without the ````DISTINCT```` keyword, 2 separate days will be counted instead of 1.
 
 to test:
 ````sql
@@ -88,9 +88,9 @@ HAVING
 |B          |6               |
 |C          |2               |
 
-- Customer A visitted on 4 days
-- Customer B visitted on 6 days
-- Customer C visitted on 2 days
+- Customer A visitted on 4 days.
+- Customer B visitted on 6 days.
+- Customer C visitted on 2 days.
 
 ***
 
@@ -125,9 +125,9 @@ ORDER BY
 
 **Steps:**
 
-- Create a CTE (think of it as a temporary table) that contains ````sales.customer_id````, ````sales.order_date```` and ````menu.product_name```` which we will need to show in the final result
-- Within the CTE, create a column ````ranked```` which shows how early each food was ordered. ````DENSE_RANK()```` assigns the ranking follwoing ````ORDER BY sales.order_date ASC````, hence the earlier food orderd gets ranked higher
-- ````PARTITION BY```` ensures the ranking is done separately for each customer
+- Create a CTE (think of it as a temporary table) that contains ````sales.customer_id````, ````sales.order_date```` and ````menu.product_name```` which we will need to show in the final result.
+- Within the CTE, create a column ````ranked```` which shows how early each food was ordered. ````DENSE_RANK()```` assigns the ranking follwoing ````ORDER BY sales.order_date ASC````, hence the earlier food orderd gets ranked higher.
+- ````PARTITION BY```` ensures the ranking is done separately for each customer.
 
 **Answer:**
 
@@ -138,9 +138,9 @@ ORDER BY
 |B          |2021-01-01|curry       |
 |C          |2021-01-01|ramen       |
 
-- Customer A ordered both curry and sushi on during their first visit
-- Customer B ordered sushi on their first visit
-- Customer C ordered ramen on their first visit
+- Customer A ordered both curry and sushi on during their first visit.
+- Customer B ordered sushi on their first visit.
+- Customer C ordered ramen on their first visit.
 
 ***
 
@@ -184,10 +184,10 @@ WHERE
 ````
 
 **Steps:**
-- Create a CTE ````sales_count```` to and calculate how many units each food was sold using ````COUNT````
-- Create another CTE ````sales_count_ranking```` and rank the sales of each food using ````DENSE_RANK()````
-- Use ````ORDER BY sales_count.unit_sold DESC```` so that the food with the higher sales is ranked first
-- This approach accounts for the case where multiple foods share the top-selling spot. For example, both sushi and ramen have 10 unit sold, while curry has 8 units sold
+- Create a CTE ````sales_count```` to and calculate how many units each food was sold using ````COUNT````.
+- Create another CTE ````sales_count_ranking```` and rank the sales of each food using ````DENSE_RANK()````.
+- Use ````ORDER BY sales_count.unit_sold DESC```` so that the food with the higher sales is ranked first.
+- This approach accounts for the case where multiple foods share the top-selling spot. For example, both sushi and ramen have 10 unit sold, while curry has 8 units sold.
 
 **Answer:**
 
@@ -195,7 +195,7 @@ WHERE
 |----------|------------|---------|
 |3         |ramen       |8        |
 
-- Ramen is the most popular food, with 8 units sold
+- Ramen is the most popular food, with 8 units sold.
 
 To see the sales for other foods, simply run:
 
@@ -253,9 +253,9 @@ WHERE
 ````
 
 **Steps:**
-- Create a CTE ````orders_by_customer```` and calculate how many units each food is ordered by each customer using ````COUNT````
-- Create another CTE ````preference_ranking```` and rank the ordering frequency of each food by each customer using ````DENSE_RANK()````
-- Use ````ORDER BY unit_sold DESC```` so that the food with the higher sales is ranked first
+- Create a CTE ````orders_by_customer```` and calculate how many units each food is ordered by each customer using ````COUNT````.
+- Create another CTE ````preference_ranking```` and rank the ordering frequency of each food by each customer using ````DENSE_RANK()````.
+- Use ````ORDER BY unit_sold DESC```` so that the food with the higher sales is ranked first.
 
 **Answer:**
 
@@ -267,9 +267,9 @@ WHERE
 |B          |ramen       |2        |
 |C          |ramen       |3        |
 
-- Customer A's favourite is ramen
-- Customer B's favourites are curry, sushi and ramen
-- Customer C's favourite is ramen
+- Customer A's favourite is ramen.
+- Customer B's favourites are curry, sushi and ramen.
+- Customer C's favourite is ramen.
 
 To see the preference data for each customer, run:
 
@@ -322,8 +322,8 @@ ORDER BY
 ````
 **Steps:**
 
-- Create a CTE ````member_orders```` to store the ````product_id```` of their order after becoming a member
-- Use ````INNER JOIN```` and````sales.order_date > members.join_date```` to ensure the data stored is order from after the customer joined the membership
+- Create a CTE ````member_orders```` to store the ````product_id```` of their order after becoming a member.
+- Use ````INNER JOIN```` and````sales.order_date > members.join_date```` to ensure the data stored is order from after the customer joined the membership.
 
 **Answer:**
 
@@ -332,8 +332,8 @@ ORDER BY
 |A          |ramen       |
 |B          |sushi       |
 
-- Customer A ordered ramen after becoming a member
-- Customer B ordered sushi after becoming a member
+- Customer A ordered ramen after becoming a member.
+- Customer B ordered sushi after becoming a member.
 
 ***
 
@@ -371,9 +371,9 @@ ORDER BY
 
 **Steps:**
 
-- Create a CTE ````pre_member_order```` which stores all member's orders before they become a member with ````sales.order_date < members.join_date````
-- Use ````ORDER BY sales.order_date DESC```` so that the latest order for each customer before they became a member is on top
-- Use ````DENSE_RANK()```` to rank the food orders by date as ````rev_ranked````, so that we can coveniently filter and retrieve using ````rev_ranked = 1````
+- Create a CTE ````pre_member_order```` which stores all member's orders before they become a member with ````sales.order_date < members.join_date````.
+- Use ````ORDER BY sales.order_date DESC```` so that the latest order for each customer before they became a member is on top.
+- Use ````DENSE_RANK()```` to rank the food orders by date as ````rev_ranked````, so that we can coveniently filter and retrieve using ````rev_ranked = 1````.
 
 **Answer:**
 
@@ -383,8 +383,8 @@ ORDER BY
 |A          |curry       |
 |B          |sushi       |
 
-- Customer A ordered both sushi and curry just before becoming a member
-- Customer B ordered sushi just before becoming a member
+- Customer A ordered both sushi and curry just before becoming a member.
+- Customer B ordered sushi just before becoming a member.
 
 ***
 
@@ -418,9 +418,9 @@ ORDER BY
 ````
 **Steps:**
 
-- Create a CTE ````pre_member_order```` which stores all member's orders before they become a member with ````sales.order_date < members.join_date````
-- Use ````COUNT(*)```` to count the total number of items ordered
-- Use ````SUM(menu.price)```` to sum up the prices of each order
+- Create a CTE ````pre_member_order```` which stores all member's orders before they become a member with ````sales.order_date < members.join_date````.
+- Use ````COUNT(*)```` to count the total number of items ordered.
+- Use ````SUM(menu.price)```` to sum up the prices of each order.
 
 **Answer:**
 
@@ -429,8 +429,8 @@ ORDER BY
 |A          |2             |25         |
 |B          |3             |40         |
 
-- Customer A ordered 2 items for the price of $25 before becoming a member
-- Customer B ordered 3 items for the price of $40 before becoming a member
+- Customer A ordered 2 items for the price of $25 before becoming a member.
+- Customer B ordered 3 items for the price of $40 before becoming a member.
 
 ***
 
@@ -453,9 +453,9 @@ GROUP BY
 
 **Steps:**
 
-- Use ````SUM```` to add up the price of all orders for each customer
-- Use ````WHEN menu.product_name = "sushi" THEN menu.price * 2```` since sushi has a 2x multiplier
-- Use ````SUM(...) * 10```` to multiply the sum of prices by 10 as $1 = 10 points
+- Use ````SUM```` to add up the price of all orders for each customer.
+- Use ````WHEN menu.product_name = "sushi" THEN menu.price * 2```` since sushi has a 2x multiplier.
+- Use ````SUM(...) * 10```` to multiply the sum of prices by 10 as $1 = 10 points.
 
 **Answer:**
 
@@ -465,13 +465,63 @@ GROUP BY
 |B          |940   |
 |C          |360   |
 
-- Customer A has 860 points
-- Customer B has 940 points
-- Customer C has 360 points
+- Customer A has 860 points.
+- Customer B has 940 points.
+- Customer C has 360 points.
 
 ***
 
 **10. In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?**
+
+````sql
+WITH first_week AS (
+	SELECT
+		members.customer_id,
+		members.join_date,
+		DATE_ADD(members.join_date, INTERVAL 6 DAY) AS end_week
+	FROM
+		members
+)
+
+SELECT
+	sales.customer_id,
+	SUM(
+		CASE
+			WHEN sales.order_date BETWEEN first_week.join_date AND first_week.end_week
+				THEN menu.price * 2
+			WHEN menu.product_name = "sushi"
+				THEN menu.price * 2
+			ELSE
+				menu.price
+			END
+	) * 10 AS points
+FROM
+	sales
+INNER JOIN first_week
+	ON first_week.customer_id = sales.customer_id
+INNER JOIN menu
+	ON sales.product_id = menu.product_id
+WHERE
+	sales.order_date <= "2021-01-31"
+GROUP BY
+	sales.customer_id
+ORDER BY
+	sales.customer_id;
+````
+**Steps:**
+- Create a CTE ````first_week```` to store the start and end of the first week of each customer's membership.
+- Use ````DATE_ADD```` and ````INTERVAL 6 DAY```` to calculate the end of the first week of membership, namely 6 days after becoming a member.
+- Use ````SUM```` to calculate the amount spent before January 2021, denoted by ````sales.order_date <= "2021-01-31"````. Use ````CASE WHEN```` to apply specific multipliers: 2x for any food within the first week of membership, otherwise only 2x for sushi.
+
+**Answer:**
+
+|customer_id|points|
+|-----------|------|
+|A          |1370  |
+|B          |820   |
+
+- Customer A has 1370 points by the end of January 2021
+- Customer B has 820 points by the end of January 2021
 
 ### Bonus Questions and Solutions
 

@@ -1,28 +1,33 @@
-WITH member_orders AS (
+WITH first_week AS (
 	SELECT
 		members.customer_id,
-		sales.product_id,
-		DENSE_RANK() OVER (
-			PARTITION BY members.customer_id
-			ORDER BY sales.order_date ASC
-		) AS ranked
+		members.join_date,
+		DATE_ADD(members.join_date, INTERVAL 6 DAY) AS end_week
 	FROM
 		members
-	INNER JOIN sales
-		ON sales.customer_id = members.customer_id 
-		AND sales.order_date > members.join_date
 )
 
 SELECT
-	member_orders.customer_id,
-	SUM(menu.price) * 10 AS points
+	sales.customer_id,
+	SUM(
+		CASE
+			WHEN sales.order_date BETWEEN first_week.join_date AND first_week.end_week
+				THEN menu.price * 2
+			WHEN menu.product_name = "sushi"
+				THEN menu.price * 2
+			ELSE
+				menu.price
+			END
+	) * 10 AS points
 FROM
-	member_orders
+	sales
+INNER JOIN first_week
+	ON first_week.customer_id = sales.customer_id
 INNER JOIN menu
-	ON menu.product_id = member_orders.product_id
+	ON sales.product_id = menu.product_id
 WHERE
-	member_orders.ranked <= 7
+	sales.order_date <= "2021-01-31"
 GROUP BY
-	member_orders.customer_id
+	sales.customer_id
 ORDER BY
-	member_orders.customer_id;
+	sales.customer_id;
