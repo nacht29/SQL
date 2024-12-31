@@ -523,11 +523,13 @@ ORDER BY
 - Customer A has 1370 points by the end of January 2021.
 - Customer B has 820 points by the end of January 2021.
 
+***
+
 ### Bonus Questions and Solutions
 
 **1. Join All The Things**
 
-**Recreate the following table with customer_id, order_date, product_name, price, member(Y/N)**
+**Recreate the following table with: customer_id, order_date, product_name, price, member(Y/N)**
 
 ````sql
 SELECT
@@ -574,9 +576,13 @@ ORDER BY
 |C          |2021-01-01|ramen       |12   |N     |
 |C          |2021-01-07|ramen       |12   |N     |
 
+***
+
 **2. Rank All The Things**
 
 **Danny also requires further information about the ranking of customer products, but he purposely does not need the ranking for non-member purchases so he expects null ranking values for the records when customers are not yet part of the loyalty program.**
+
+**Create a table with: customer_id, order_date, product_name, price, member(Y/N), ranking, where ranking is the ranking of food item prices in descendinh order for each customer after joining the loyalty programme**
 
 ````sql
 WITH customer_data AS (
