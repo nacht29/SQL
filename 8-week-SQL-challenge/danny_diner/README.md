@@ -88,9 +88,9 @@ HAVING
 |B          |6               |
 |C          |2               |
 
-- Customer A visitted on 4 days.
-- Customer B visitted on 6 days.
-- Customer C visitted on 2 days.
+- Customer A visited on 4 days.
+- Customer B visited on 6 days.
+- Customer C visited on 2 days.
 
 ***
 
